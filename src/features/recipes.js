@@ -9,7 +9,7 @@ export const fetchRecipes = createAsyncThunk('posts/fetchRecipes', async (data, 
 
     } catch (error) {
         console.log(error);
-        return rejectWithValue(error.response.message)
+        return rejectWithValue(error?.response?.data?.message)
 
     }
 })
@@ -17,36 +17,35 @@ export const fetchRecipes = createAsyncThunk('posts/fetchRecipes', async (data, 
 export const deleteRecipe = createAsyncThunk("posts/deleteRecipe", async (_id, { rejectWithValue }) => {
     try {
         const response = await axios.post(DELETE_RECIPE_API, { _id });
-        
+
         return response?.data?.allRecipes
     } catch (error) {
         console.log(error);
-        return rejectWithValue(error.response.message)
+        return rejectWithValue(error?.response?.data?.message)
     }
 })
+
 export const searchRecipe = createAsyncThunk("posts/searchRecipe", async (name, { rejectWithValue }) => {
     try {
-        
-        
-        const response = await axios.post(SEARCH_RECIPE_API, { name }); 
-        console.log(response.data);
-           
+
+
+        const response = await axios.post(SEARCH_RECIPE_API, { name });
+
         return response?.data?.recipe
     } catch (error) {
         console.log(error);
-        return rejectWithValue(error.response.message)
+        return rejectWithValue(error?.response?.data?.message)
     }
 })
 
 export const addRecipe = createAsyncThunk("posts/addRecipe", async (formData, { rejectWithValue }) => {
     try {
         const response = await axios.post(CREATE_NEW_RECIPE_API, { ...formData });
-console.log(response?.data?.allRecipes);
 
         return response?.data?.allRecipes
     } catch (error) {
         console.log(error);
-        return rejectWithValue(error.response.message)
+        return rejectWithValue(error?.response?.data?.message)
     }
 })
 
@@ -60,7 +59,12 @@ export const recipeSlice = createSlice({
     name: "recipe",
     initialState,
     reducers: {
-
+        setStatus: (state, {payload}) =>{
+            state.status = payload
+        },
+        setError: (state, ) =>{
+            state.error = null
+        }
     },
     extraReducers: (builder) => {
 
@@ -108,7 +112,7 @@ export const recipeSlice = createSlice({
 
         builder.addCase(searchRecipe.fulfilled, (state, { payload }) => {
             console.log(payload);
-            
+
             state.status = "success"
             state.recipes = [payload]
         })
@@ -118,5 +122,5 @@ export const recipeSlice = createSlice({
         })
     }
 })
-
+export const {setStatus, setError}  = recipeSlice.actions
 export default recipeSlice.reducer
