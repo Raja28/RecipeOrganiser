@@ -1,9 +1,11 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Header from "../components/Header"
-import { useDispatch } from "react-redux"
-import { addRecipe } from "../features/recipes"
+import { useDispatch, useSelector } from "react-redux"
+import { addRecipe, setError, setStatus } from "../features/recipes"
 
 function AddRecipe() {
+    const { recipes, error, status } = useSelector(state => state.recipe)
+
     const [formData, setFormData] = useState({
         name: '',
         cuisine: "",
@@ -13,6 +15,15 @@ function AddRecipe() {
     })
 
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (status === "success") {
+            dispatch(setStatus("idle"))
+        }
+        if (error !== null) {
+            dispatch(setError())
+        }
+    }, [])
 
     function onChangeHandler(e) {
         const { name, value } = e.target
@@ -25,8 +36,17 @@ function AddRecipe() {
 
     function onSubmitHandler(e) {
         e.preventDefault()
-        formData.ingredients = formData.ingredients.split(" ")
-        formData.instructions = formData.instructions.split(" ")
+        const { ingredients, instructions } = formData
+        if (ingredients) {
+            formData.ingredients = ingredients.split(",")
+        }else{
+            formData.ingredients = []
+        }
+        if (instructions) {
+            formData.instructions = instructions.split(",")
+        }else{
+            formData.instructions = []
+        }
 
         dispatch(addRecipe(formData))
         setFormData({
@@ -79,7 +99,7 @@ function AddRecipe() {
                         <br />
                         <textarea
                             rows={3}
-                            cols={25}
+                            cols={23}
                             type="text"
                             name="ingredients"
                             id="ingredients"
@@ -91,7 +111,7 @@ function AddRecipe() {
                         <br />
                         <textarea
                             rows={3}
-                            cols={25}
+                            cols={23}
                             type="text"
                             name="instructions"
                             id="instructions"
@@ -102,6 +122,10 @@ function AddRecipe() {
                         <br />
                         <br />
                         <button className="btn btn-primary">Submit</button>
+                        {error && status === "error" && <div className="my-2">{error}</div>}
+                        {status === "success" && recipes?.length > 0 && <div className="my-2">
+                            {recipes[recipes?.length - 1]?.name} Add Successfully
+                        </div>}
                     </form>
                 </section>
             </main>
