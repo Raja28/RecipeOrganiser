@@ -7,23 +7,18 @@ function Recipe(params) {
 
     const { recipes } = useSelector(state => state.recipe)
     const { recipeId } = useParams()
-    // console.log(recipes);
-    // console.log(recipeId);
-
 
     const recipeIndex = recipes.findIndex(recipe => recipe?._id == recipeId)
-    // console.log(recipes[recipeIndex]);
-
 
     return (
         <>
             <Header />
             <main>
-                <section className="container ">
+                <section className="container">
                     <div className="row ">
                         <h5 class="card-title fs-4 my-3">{recipes[recipeIndex]?.name}</h5>
                         <div className="col">
-                            <div className="card mb-3" style={{ maxWidth: "540px" }}>
+                            <div className="card mb-3" >
                                 <div className="row g-0">
                                     <div className="col-md-4">
                                         <img src={recipes[recipeIndex]?.imageURL} className="img-fluid rounded-start" alt={recipes[recipeIndex]?.name} />
