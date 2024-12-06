@@ -97,7 +97,6 @@ function AddRecipe() {
                             id="instructions"
                             value={formData.instructions}
                             onChange={(e) => onChangeHandler(e)}>
-
                         </textarea>
 
                         <br />
