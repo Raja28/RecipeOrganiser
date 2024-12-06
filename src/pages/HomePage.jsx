@@ -17,7 +17,7 @@ function HomePage() {
 
     function onChangeHandler(e) {
         const { value, name } = e.target
-        
+
         setRecipeName(({
             [name]: value
         }))
@@ -25,8 +25,8 @@ function HomePage() {
 
     function searchHandler(e) {
         e.preventDefault()
-      
-        
+
+
         dispatch(searchRecipe(recipeName.name))
         setRecipeName({ name: "" })
     }
@@ -43,6 +43,7 @@ function HomePage() {
                                 name="name"
                                 onChange={(e) => onChangeHandler(e)}
                                 value={recipeName.name}
+                                placeholder="search"
                             />
                             <label htmlFor="floatingInput">Search by recipe name...</label>
                         </div>
@@ -53,7 +54,11 @@ function HomePage() {
                     <h3>All Recipe:</h3>
                     <div>
                         {status === "loading" && <div className="text-center mt-5">Loading...</div>}
-                        {error && <div className="text-center mt-5">{error}</div>}
+                        {error && status === "error" &&
+                            <div className="text-center mt-5 d-flex flex-column align-items-center justify-content-center">
+                                {error}
+                                <p className="btn btn-primary my-3 " onClick={()=>dispatch(fetchRecipes())}>Refresh</p>
+                            </div>}
 
                         {
                             status == "success" &&
