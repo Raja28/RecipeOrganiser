@@ -5,10 +5,11 @@ import { CREATE_NEW_RECIPE_API, DELETE_RECIPE_API, FETCH_ALL_RECIPE_API, SEARCH_
 export const fetchRecipes = createAsyncThunk('posts/fetchRecipes', async (data, { rejectWithValue }) => {
     try {
         const response = await axios.get(FETCH_ALL_RECIPE_API)
+        console.log("response", response)
         return response?.data?.recipes
 
     } catch (error) {
-        console.log(error);
+        console.log("error", error);
         return rejectWithValue(error?.response?.data?.message)
 
     }
