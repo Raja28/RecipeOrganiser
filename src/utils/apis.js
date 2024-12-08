@@ -1,4 +1,5 @@
-const BASEURL = "http://localhost:2024/recipe"
+// const BASEURL = "http://localhost:2024/recipe"
+const BASEURL = "https://recipe-organiser-server-nu.vercel.app/recipe"
 
 export const FETCH_ALL_RECIPE_API = BASEURL + "/get-recipes"
 export const CREATE_NEW_RECIPE_API = BASEURL + "/create-recipe"
